@@ -19,7 +19,6 @@ public class BinSearch {
     }
 
     private Node root;
-    public int max_height = 0;
 //    private int size = 0;
 //	private Integer height;
 
@@ -40,7 +39,7 @@ public class BinSearch {
 //             System.out.println(addNode.height);
 //            System.out.println(addNode);
 
-            return root; }
+            return new Node(value); }
 
         if (value > node.value) {
 
@@ -115,6 +114,7 @@ public class BinSearch {
         Set<Node> visited = new HashSet<>();
         Stack <Node> stack = new Stack<>();
         stack.push(root);
+        int max_height = 0;
         int temp_height = 1;
 
 
@@ -194,7 +194,7 @@ public class BinSearch {
         BinSearch hi = new BinSearch();
 
         hi.add(12); //1
-        hi.add(12444); //2
+//        hi.add(12444); //2
 //        hi.add(30); //2
 //        hi.add(8); //3
 //        hi.add(12); //3
@@ -204,9 +204,8 @@ public class BinSearch {
 //        hi.add(9);
 
 //        hi.remove(9);
-//        System.out.println(hi.max_height);
         System.out.println(hi.height());
-//        System.out.println(hi.contains(12));
+        System.out.println(hi.contains(26));
 
 
 
