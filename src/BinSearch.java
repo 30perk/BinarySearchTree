@@ -39,7 +39,8 @@ public class BinSearch {
 //             System.out.println(addNode.height);
 //            System.out.println(addNode);
 
-            return new Node(value); }
+            return new Node(value);
+        }
 
         if (value > node.value) {
 
@@ -49,8 +50,8 @@ public class BinSearch {
             node.left = addMethod(node.left, value);
         }
 
-        return node; }
-
+        return node;
+    }
 
 
     public int max() {
@@ -109,10 +110,12 @@ public class BinSearch {
 
     public int height() {
         // null
-        if (root == null) { return 0; }
+        if (root == null) {
+            return 0;
+        }
         // set helper
         Set<Node> visited = new HashSet<>();
-        Stack <Node> stack = new Stack<>();
+        Stack<Node> stack = new Stack<>();
         stack.push(root);
         int max_height = 0;
         int temp_height = 1;
@@ -142,75 +145,101 @@ public class BinSearch {
         return max_height;
     }
 
-//    public void remove(int value) {
-//        removeMethod(root, value);
-//    }
-//
-//    private Node goLeft(Node node) {
-//        while (node.left != null) {
-//            goLeft(node.left);
-//        }
-//
-//        node.prev.left = null;
-//        return node;
-//    }
 
-//    private void removeMethod(Node node, int value) {
-//        // null
-//        if (node == null) {
-//            return;
-//        }
-//
-//
-//        if (node.value == value) {
-//            // leaf
-//            if (node.left == null && node.right == null) {
-//
-//            }
-//
-//            // two kids
-//            if (node.left != null & node.right != null) {
-//
-//
-//            }
-//
-//            // one child
-//            if (node.left != null || node.right != null) {
-//                // left child
-//
-//
-//
-//            }
-//
-//        }
-//        }
-//    }
+    private Node goLeft(Node node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
 
-//    public int height() {
-//        return max_height;
-//    }
+
+    public void remove(int value) {
+        // empty
+        if (root == null) {return;}
+
+        Stack<Node> mainStack = new Stack<>();
+//        Stack<Node> ifNeeded = new Stack<>();
+        Node curr = root;
+        Node parent = null;
+
+        // find node
+        while (curr != null && curr.value != value) {
+            parent = curr;
+            // find node
+            if (curr.value > value) {
+                mainStack.push(curr);
+                curr = curr.left;
+            } else {
+                mainStack.push(curr);
+                curr = curr.right;
+            }
+        }
+        if (curr == null) { return; } // didn't find node
+
+        // leaf
+        if (curr.left == null && curr.right == null) {
+            // check if there's more than one node
+            if (curr != root) {
+                // delete curr node
+                if (parent.left == curr) {
+                    parent.left = null;
+                } else {
+                    parent.right = null;
+                }
+            }
+            else { root=null; }  // there was only the root node
+        }
+
+        // two kids
+        else if (curr.left != null && curr.right != null) {
+            // down right and farthest to the left
+            Node farLeft = goLeft(curr.right);
+            int val = farLeft.value;
+            remove(farLeft.value);
+            curr.value = val;
+        }
+        // one child
+        else {
+            // is it right child or left child
+            Node child = (curr.left != null) ? curr.left : curr.right;
+
+            if (curr != root) {
+                // delete curr node
+                if (curr == parent.left) {
+                    parent.left = child;
+                } else {
+                    parent.right = child;
+                }
+            } else { root = child; }
+
+        }
+        
+    }
+
 
     public static void main(String[] args) {
         BinSearch hi = new BinSearch();
 
         hi.add(12); //1
-//        hi.add(12444); //2
-//        hi.add(30); //2
-//        hi.add(8); //3
-//        hi.add(12); //3
-//        hi.add(26);
-//        hi.add(33);
-//        hi.add(7);
-//        hi.add(9);
+        hi.add(12444); //2
+        hi.add(3235350); //2
+        hi.add(54528); //3
+        hi.add(54512); //3
+        hi.add(2614);
+        hi.add(33);
+        hi.add(7);
+        hi.add(9);
 
 //        hi.remove(9);
-        System.out.println(hi.height());
-        System.out.println(hi.contains(26));
+        hi.remove(12444);
 
+        System.out.println(hi.contains(12444));
 
 
 //    	System.out.println(hi.max());
 
     }
+
 
 }
