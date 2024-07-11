@@ -109,40 +109,39 @@ public class BinSearch {
     }
 
     public int height() {
-        // null
-        if (root == null) {
-            return 0;
+        if (root == null) { return 0; }
+        if (root.right == null && root.left == null) { return 1; }
+
+        int depth = 1;
+        int depthOfLeft = 0;
+        int depthOfRight = 0;
+
+        if (root.left != null) { depthOfLeft = (heightHelper(root, depth)); }
+        if (root.right != null) { depthOfRight = (heightHelper(root, depth)); }
+
+        return Math.max(depthOfLeft, depthOfRight);
+
+    }
+
+    private int heightHelper(Node node, int depth) {
+
+        int leftDepthCounter = depth;
+        int rightDepthCounter = depth;
+
+        if (node.right != null & node.left != null) {
+            depth += 1;
+            rightDepthCounter = heightHelper(node.right, depth);
+            leftDepthCounter = heightHelper(node.left, depth);
         }
-        // set helper
-        Set<Node> visited = new HashSet<>();
-        Stack<Node> stack = new Stack<>();
-        stack.push(root);
-        int max_height = 0;
-        int temp_height = 1;
-
-
-        while (!stack.isEmpty()) {
-            Node heightCheck = stack.peek();
-
-            // depth track
-            if (!visited.contains(heightCheck)) {
-                visited.add(heightCheck);
-                temp_height = stack.size();
-                max_height = Math.max(max_height, temp_height);
-            }
-
-            // node track
-            if (heightCheck.left != null && !visited.contains(heightCheck.left)) {
-                stack.push(heightCheck.left);
-            } else if (heightCheck.right != null && !visited.contains(heightCheck.right)) {
-                stack.push(heightCheck.right);
-            } else {
-                stack.pop();
-            }
-
+        else if (node.right != null & node.left == null) {
+            depth += 1;
+            rightDepthCounter = heightHelper(node.right, depth);
+        } else if (node.left != null) {
+            depth += 1;
+            leftDepthCounter = heightHelper(node.left, depth);
         }
 
-        return max_height;
+        return Math.max(leftDepthCounter, rightDepthCounter);
     }
 
 
@@ -214,27 +213,31 @@ public class BinSearch {
             } else { root = child; }
 
         }
-        
+
     }
 
 
     public static void main(String[] args) {
         BinSearch hi = new BinSearch();
 
-        hi.add(12); //1
-        hi.add(12444); //2
-        hi.add(3235350); //2
-        hi.add(54528); //3
-        hi.add(54512); //3
-        hi.add(2614);
-        hi.add(33);
-        hi.add(7);
-        hi.add(9);
-
+        hi.add(56); //1
+        hi.add(30); //2
+        hi.add(70); //2
+        hi.add(22); //3
+        hi.add(40); //3
+        hi.add(60);
+//        hi.add(95);
+//        hi.add(11);
+//        hi.add(16);
+//        hi.add(65);
+//        hi.add(63);
+//        hi.add(67);
 //        hi.remove(9);
-        hi.remove(12444);
+//        hi.remove(12444);
 
-        System.out.println(hi.contains(12444));
+//        hi.remove(6);
+//        System.out.println(hi.contains(4 ));
+        System.out.println(hi.height());
 
 
 //    	System.out.println(hi.max());
